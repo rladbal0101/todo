@@ -1,73 +1,45 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 
-import Template from "./component/Template";
-import Insert from "./component/Insert";
-import List from "./component/List";
+import MainPage from "./component/MainPage";
+import TodoWritePage from "./component/TodoWritePage";
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
 
   body {
-    /* background: #FFF1DB; */
-    background: #FFE8C6;
+    background: #e9e9e9;
   }
 `;
+const today = new Date();
+
+
 function App() {
-
-  const [todos, setTodos] = useState([]);
-  
-  // useEffect(() => {
-  //   const dbTodos = JSON.parse(localStorage.getItem('todos')) || [];
-  //   setTodos(dbTodos);
-  // }, []);
-
-  // // 로컬 스토리지에 저장(주의: DB가 아님, DB처럼 쓰면 안됨!!)
-  // // 추가, 수정, 삭제 각 함수에 넣어도 되지만, useEffect()를 활용하면 한번에 처리 가능
-  // useEffect(() => {
-  //   localStorage.setItem('todos', JSON.stringify(todos));
-  // }, [todos]);
-
-
-  const nextId = useRef(1);
-  console.log(todos);
-  // console.log(uuidv4());
-  
-  // 추가
-  const handleInsert = useCallback((text) => {
-    const todo = {
-      id: uuidv4(),
-      text,
-      checked: false
-    };
-
-    setTodos(todos => todos.concat(todo));
-
-    nextId.current += 1;
-  }, []);
-
-  // 삭제
-  const handleRemove = useCallback((id) => {
-    setTodos(todos => todos.filter(todo => todo.id !== id));
-  }, []);
-
-  const handleToggle = useCallback((id) => {
-    setTodos(todos => todos.map((todo) => 
-      todo.id === id ? { ...todo, checked: !todo.checked } : todo
-    ));
-  }, []);
-
   return (
-    <>
+    <BrowserRouter>
       <GlobalStyle />
-      <Template>
-        <Insert onInsert={handleInsert} />
-        <List todos={todos} onRemove={handleRemove} onToggle={handleToggle} />
-      </Template>
-    </>
+      <Routes>
+        <Route path="/" element={<MainPage today={today} />} />
+        <Route path="/todo-write" element={<TodoWritePage today={today} />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
 export default App;
+
+// [추가 개선(새 프로젝트에 적용해도 됨)]
+// 할일이 몇개인지 표시(전체, 완료, 미완료)
+// 내용 숫자 줄바꿈 해결 -> 일부 특수문자 해결안됨( ?, !, $, () )
+// 미입력시 버튼 비활성화 또는 유효성 검사 후 경고 띄우기
+
+
+// 테마 적용(다크, 라이트 모드)
+
+// 날짜도 같이 기록(디데이 표시)
+// 완료된 일은 밑으로 내리기
+// 중요한 일은 필 고정 버튼 누르면 상위로 올리기
+// 할일 목록 정렬기능
+// 드래그 앤 드랍 적용
+// 할일 수정 기능

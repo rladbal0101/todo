@@ -4,7 +4,7 @@ import ListItem from './ListItem';
 
 const ListWrapper = styled.div`
   width: 100%;
-  height: 400px;
+  height: 600px;
   overflow-y: auto;
 `;
 
@@ -13,9 +13,9 @@ function List(props) {
 
   return (
     <ListWrapper>
-      {todos.map(todo => {
+      {todos.map(todo => 
         <ListItem key={todo.id} todo={todo} onRemove={onRemove} onToggle={onToggle} />
-      })}
+      )}
     </ListWrapper>
   );
 }

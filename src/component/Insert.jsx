@@ -5,7 +5,6 @@ import { GrAdd as AddIcon } from 'react-icons/gr';
 const InsertWrapper = styled.form`
   display: flex;
   background: #ddd;
-  /* display: none; */
 `;
 
 const StyledInput = styled.input`
@@ -17,10 +16,18 @@ const StyledInput = styled.input`
   flex: 1;
 `;
 
+const Date = styled.div`
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+
+  /* display: none; */
+`;
+
 const StyledButton = styled.button`
   border: none;
   font-size: 16px;
-  background-color: #ddd;
+  background: #ddd;
   padding: 12px;
   display: flex;
   align-items: center;
@@ -32,21 +39,26 @@ const StyledButton = styled.button`
   }
 `;
 
-function Insert(props) {
-  const { onInsert } = props;
 
-  const [value, setValue] = useState('');
+function Insert(props) {
+  const { onInsert, today } = props;
+
+  const [value, setValue] = useState('');  
 
   const handleChange = (e) => {
     setValue(e.target.value);
   };
   
   const handleSubmit = (e) => {
-    onInsert(value);
+    if (value == "") {
+      alert('내용을 입력하세요');
+    } else {
+      onInsert(value);
+      
+    }
     setValue('');
     e.preventDefault();
   };
-
 
   return (
     <InsertWrapper onSubmit={handleSubmit}>
@@ -56,7 +68,8 @@ function Insert(props) {
         value={value}
         onChange={handleChange}
       />
-      <StyledButton type='submit'>
+      <Date>{`${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`}</Date>
+      <StyledButton type='submit' >
         <AddIcon />
       </StyledButton>
     </InsertWrapper>
