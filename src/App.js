@@ -1,9 +1,11 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
+import { v4 as uuidv4 } from "uuid";
 
-import MainPage from "./component/MainPage";
-import TodoWritePage from "./component/TodoWritePage";
+import { useCallback, useEffect, useRef, useState } from "react";
+import Template from "./component/Template";
+import List from "./component/List";
+import Insert from "./component/Insert";
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -14,16 +16,90 @@ const GlobalStyle = createGlobalStyle`
 `;
 const today = new Date();
 
+// 다크/라이트 모드
+const themeList = {
+  light: {
+    foreground: '#000000',
+    // background: '#eeeeee'
+  },
+  dark: {
+    foreground: '#ffffff',
+    background: '#222222'
+  }
+};
 
 function App() {
+  const [todos, setTodos] = useState([]);
+  const [theme, setTheme] = useState('light');
+
+
+  // 로컬 스토리지에서 가져오기
+  useEffect(() => {
+    const dbTodos = JSON.parse(localStorage.getItem('todos')) || [];
+    setTodos(dbTodos);
+  }, []);
+
+  // 로컬 스토리지에 저장
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
+
+  const nextId = useRef(1);
+
+  // 추가
+  const handleInsert = useCallback((text) => {
+    const todo = {
+      id: uuidv4(),
+      text,
+      checked: false,
+      date: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
+      // date
+    };
+    setTodos(todos => todos.concat(todo));
+    nextId.current += 1;
+  }, []);
+
+  // 삭제
+  const handleRemove = useCallback((id) => {
+    setTodos(todos => todos.filter(todo => todo.id !== id));
+  }, []);
+
+  // 체크박스 누를 때
+  const handleToggle = useCallback((id) => {
+    setTodos(todos => todos.map((todo) => 
+      todo.id === id ? { ...todo, checked: !todo.checked } : todo
+    ));
+  }, []);
+
+  // 총 해야할 일
+  console.log(todos.length);
+
+  // 완료된 일
+  const finishedTodos = todos.filter((todo) => {
+    return (
+      todo.checked === true
+    );
+  });
+  // console.log(finishedTodos);
+
+  // 테마 변경
+  const toggleTheme = () => {
+    if (theme === 'light') {
+      setTheme('dark')
+    } else if (theme === 'dark') {
+      setTheme('light')
+    }
+  };
+
   return (
-    <BrowserRouter>
+    <>
       <GlobalStyle />
-      <Routes>
-        <Route path="/" element={<MainPage today={today} />} />
-        <Route path="/todo-write" element={<TodoWritePage today={today} />} />
-      </Routes>
-    </BrowserRouter>
+      {/* <Template todos={todos} finishedTodos={finishedTodos}> */}
+      <Template theme={{ theme, themeList, toggleTheme }} todos={todos} finishedTodos={finishedTodos} >
+        <Insert onInsert={handleInsert} />
+        <List todos={todos} onRemove={handleRemove} onToggle={handleToggle} today={today} />
+      </Template>
+    </>
   );
 }
 

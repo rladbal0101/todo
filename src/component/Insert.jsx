@@ -14,14 +14,25 @@ const StyledInput = styled.input`
   font-size: 12px;
   padding: 12px;
   flex: 1;
-`;
+  `;
 
-const Date = styled.div`
-  font-size: 12px;
+const InputDateWrap = styled.div`
   display: flex;
   align-items: center;
 
-  /* display: none; */
+  .input-date-text {
+    font-size: 12px;
+  }
+`;
+
+const InputDate = styled.input`
+  background: none;
+  outline: none;
+  border: none;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  margin: 0 15px;
 `;
 
 const StyledButton = styled.button`
@@ -39,12 +50,12 @@ const StyledButton = styled.button`
   }
 `;
 
-
 function Insert(props) {
-  const { onInsert, today } = props;
+  const { onInsert } = props;
 
   const [value, setValue] = useState('');  
-
+  const [dateValue, setDateValue] = useState('');
+  
   const handleChange = (e) => {
     setValue(e.target.value);
   };
@@ -54,7 +65,6 @@ function Insert(props) {
       alert('내용을 입력하세요');
     } else {
       onInsert(value);
-      
     }
     setValue('');
     e.preventDefault();
@@ -68,8 +78,15 @@ function Insert(props) {
         value={value}
         onChange={handleChange}
       />
-      <Date>{`${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`}</Date>
-      <StyledButton type='submit' >
+      <InputDateWrap>
+      <label className='input-date-text' htmlFor='date'>완료기한 : </label>
+        <InputDate
+          type='date'
+          id='date'
+          // value={dateValue}
+        />
+      </InputDateWrap>
+      <StyledButton type='submit'>
         <AddIcon />
       </StyledButton>
     </InsertWrapper>

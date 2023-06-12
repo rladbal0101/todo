@@ -21,6 +21,11 @@ const Checkbox = styled.div`
   }
 `;
 
+const DDay = styled.div`
+  font-size: 12px;
+  margin: 0 10px;
+`;
+
 const Text = styled.div`
   width: 500px;
   margin-left: 10px;
@@ -39,6 +44,8 @@ const Text = styled.div`
 `;
 
 const Date = styled.div`
+  font-size: 12px;
+
 `;
 
 const Revision = styled.div`
@@ -63,9 +70,15 @@ const Remove = styled.div`
 `;
 
 function ListItem(props) {
-  const { todo, onRemove, onToggle } = props;
-  const { id, text, checked } = todo;
+  const { todo, onRemove, onToggle, today } = props;
+  const { id, text, checked, date } = todo;
+
+  // console.log(today);
+
+  // const diffDate = date.getTime() - today.getTime();
+  // const result = Math.ceil(diffDate / (1000 * 60 * 60 * 24));
   
+  // console.log(todo.date);
   // console.log(id, text);
   // console.log(props);
 
@@ -76,8 +89,10 @@ function ListItem(props) {
       >
         {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
       </Checkbox>
+      <DDay>D-</DDay>
+
       <Text checked={checked}>{text}</Text>
-      <Date></Date>
+      <Date>{todo.date}</Date>
       <Revision>
         <MdCreate />
       </Revision>
