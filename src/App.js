@@ -14,24 +14,23 @@ const GlobalStyle = createGlobalStyle`
     background: #e9e9e9;
   }
 `;
-const today = new Date();
 
 // 다크/라이트 모드
 const themeList = {
   light: {
-    foreground: '#000000',
-    // background: '#eeeeee'
+    foreground: '#333',
+    background: '#eee'
   },
   dark: {
-    foreground: '#ffffff',
-    background: '#222222'
+    foreground: '#EDB4B1',
+    background: '#222',
   }
 };
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [theme, setTheme] = useState('light');
-
+  const [revTodos, setRevTodos] = useState([]);
 
   // 로컬 스토리지에서 가져오기
   useEffect(() => {
@@ -47,13 +46,12 @@ function App() {
   const nextId = useRef(1);
 
   // 추가
-  const handleInsert = useCallback((text) => {
+  const handleInsert = useCallback((text, date) => {
     const todo = {
       id: uuidv4(),
       text,
       checked: false,
-      date: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
-      // date
+      date
     };
     setTodos(todos => todos.concat(todo));
     nextId.current += 1;
@@ -71,8 +69,17 @@ function App() {
     ));
   }, []);
 
+  // 수정
+  const handleRevision = useCallback((id) => {
+    // setTodos(todos => todos.filter(todo => todo.id !== id)); // 이건 삭제기능
+    
+    setRevTodos(todos => todos.filter(todo => todo.id === id));
+    console.log(revTodos);
+    
+  }, []);
+
   // 총 해야할 일
-  console.log(todos.length);
+  // console.log(todos.length);
 
   // 완료된 일
   const finishedTodos = todos.filter((todo) => {
@@ -91,13 +98,24 @@ function App() {
     }
   };
 
+  // 날짜순으로 정렬
+  const handleSort = () => {
+    const sortTodos = [...todos];
+    sortTodos.sort((a, b) => a.date < b.date ? -1 : 1);
+    setTodos(sortTodos);
+  };
+
   return (
     <>
-      <GlobalStyle />
-      {/* <Template todos={todos} finishedTodos={finishedTodos}> */}
+      <GlobalStyle
+        style={{
+          backgroundColor: themeList[theme].background,
+          color: themeList[theme].foreground
+        }}
+      />
       <Template theme={{ theme, themeList, toggleTheme }} todos={todos} finishedTodos={finishedTodos} >
         <Insert onInsert={handleInsert} />
-        <List todos={todos} onRemove={handleRemove} onToggle={handleToggle} today={today} />
+        <List todos={todos} onRemove={handleRemove} onToggle={handleToggle} onRevision={handleRevision} onSort={handleSort} />
       </Template>
     </>
   );
@@ -109,13 +127,13 @@ export default App;
 // 할일이 몇개인지 표시(전체, 완료, 미완료)
 // 내용 숫자 줄바꿈 해결 -> 일부 특수문자 해결안됨( ?, !, $, () )
 // 미입력시 버튼 비활성화 또는 유효성 검사 후 경고 띄우기
+// 날짜도 같이 기록(디데이 표시)
+// 할일 목록 정렬기능 (정렬 참고(https://jurgen-94.tistory.com/21))
 
 
 // 테마 적용(다크, 라이트 모드)
 
-// 날짜도 같이 기록(디데이 표시)
 // 완료된 일은 밑으로 내리기
-// 중요한 일은 필 고정 버튼 누르면 상위로 올리기
-// 할일 목록 정렬기능
+// 중요한 일은 핀 고정 버튼 누르면 상위로 올리기
 // 드래그 앤 드랍 적용
 // 할일 수정 기능

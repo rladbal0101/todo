@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { CgRemoveR } from "react-icons/cg";
 import { MdCheckBox, MdCheckBoxOutlineBlank, MdCreate } from "react-icons/md";
 
 const ListItemWrapper = styled.div`
-  padding: 1rem;
+  padding: 0.5rem;
   display: flex;
   align-items: center;
 `;
@@ -22,8 +22,9 @@ const Checkbox = styled.div`
 `;
 
 const DDay = styled.div`
+  width: 40px;
   font-size: 12px;
-  margin: 0 10px;
+  margin-left: 10px ;
 `;
 
 const Text = styled.div`
@@ -43,9 +44,8 @@ const Text = styled.div`
   }
 `;
 
-const Date = styled.div`
+const CompletionDate = styled.div`
   font-size: 12px;
-
 `;
 
 const Revision = styled.div`
@@ -70,17 +70,15 @@ const Remove = styled.div`
 `;
 
 function ListItem(props) {
-  const { todo, onRemove, onToggle, today } = props;
+  const { todo, onRemove, onToggle, onRevision } = props;
   const { id, text, checked, date } = todo;
-
-  // console.log(today);
-
-  // const diffDate = date.getTime() - today.getTime();
-  // const result = Math.ceil(diffDate / (1000 * 60 * 60 * 24));
   
-  // console.log(todo.date);
-  // console.log(id, text);
-  // console.log(props);
+  // D-day 구하기
+  const today = new Date();
+  const someDay = new Date(date);
+  const diffDate = someDay.getTime() - today.getTime();
+  const dDayResult = Math.ceil(diffDate / (1000 * 60 * 60 * 24));
+  const Day = dDayResult > 0 ? dDayResult * (-1) : `+${dDayResult * (-1)}`;
 
   return (
     <ListItemWrapper>
@@ -89,11 +87,12 @@ function ListItem(props) {
       >
         {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
       </Checkbox>
-      <DDay>D-</DDay>
-
+      <DDay>D{Day}</DDay>
       <Text checked={checked}>{text}</Text>
-      <Date>{todo.date}</Date>
-      <Revision>
+      <CompletionDate>{todo.date}</CompletionDate>
+      <Revision
+        onClick={() => { onRevision(id); }}
+      >
         <MdCreate />
       </Revision>
       <Remove

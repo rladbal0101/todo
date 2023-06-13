@@ -4,7 +4,7 @@ import { GrAdd as AddIcon } from 'react-icons/gr';
 
 const InsertWrapper = styled.form`
   display: flex;
-  background: #ddd;
+  background: #E8E3E3;
 `;
 
 const StyledInput = styled.input`
@@ -38,35 +38,43 @@ const InputDate = styled.input`
 const StyledButton = styled.button`
   border: none;
   font-size: 16px;
-  background: #ddd;
+  background: #E8E3E3;
   padding: 12px;
   display: flex;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
   transition: .3s;
   
   &:hover {
-    background-color: #EAB6C4;
+    background-color: #EFCBCB;
   }
 `;
 
 function Insert(props) {
   const { onInsert } = props;
-
+  
   const [value, setValue] = useState('');  
   const [dateValue, setDateValue] = useState('');
-  
+
   const handleChange = (e) => {
     setValue(e.target.value);
+  };
+
+  const handleDateChange = (e) => {
+    setDateValue(e.target.value);
   };
   
   const handleSubmit = (e) => {
     if (value == "") {
       alert('내용을 입력하세요');
+    } else if (dateValue == "") {
+      alert('완료 기한을 입력하세요');
     } else {
-      onInsert(value);
+      onInsert(value, dateValue);
+      setValue('');
+      setDateValue('');
     }
-    setValue('');
     e.preventDefault();
   };
 
@@ -79,13 +87,15 @@ function Insert(props) {
         onChange={handleChange}
       />
       <InputDateWrap>
-      <label className='input-date-text' htmlFor='date'>완료기한 : </label>
+        <label className='input-date-text' htmlFor='date'>완료기한 : </label>
         <InputDate
           type='date'
-          id='date'
-          // value={dateValue}
+          id='inputDate'
+          value={dateValue}
+          onChange={handleDateChange}
         />
       </InputDateWrap>
+    
       <StyledButton type='submit'>
         <AddIcon />
       </StyledButton>

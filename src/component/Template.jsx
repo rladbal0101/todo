@@ -1,16 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
-// import { useNavigate } from 'react-router-dom';
-import { GrAdd as AddIcon } from 'react-icons/gr';
 
 const TemplateWrapper = styled.div`
-  width: calc(100% - 50px);
-  min-height: 600px;
+  width: calc(100%);
+  min-height: 100vh;
   font-size: 22px;
-  margin: 0 auto;
-  margin-top: 30px;
-  border-radius: 14px;
+  /* margin: 0 auto; */
 
   .title {
     text-align: center;
@@ -24,17 +20,17 @@ const TemplateWrapper = styled.div`
   .btn-wrap {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 10px;
+    margin: 0 12px 12px 0;
   }
   
   .checked {
     text-align: right;
     font-size: 14px;
-    margin-bottom: 12px;
+    margin: 0 12px 12px 0;
   }
   
   .content {
-    background: #d7d7d7;
+    /* background: #d7d7d7; */
   }
 `;
 
@@ -49,30 +45,27 @@ const ThemeButton = styled.button`
 `;
 
 function Template(props) {
-  // const { children, todos, finishedTodos, theme: { theme, themeList, toggleTheme } } = props;
-  const { children, todos, finishedTodos } = props;
-  console.log(finishedTodos);
+  const { children, todos, finishedTodos, theme: { theme, themeList, toggleTheme } } = props;
+  // const { children, todos, finishedTodos } = props;
   const allTodos = todos.length;
   const finished = finishedTodos.length;
-  // const navigate = useNavigate();
   
   // console.log(theme);
   
   return (
     <TemplateWrapper
-      // style={{
-      //   backgroundColor: themeList[theme].background,
-      //   color: themeList[theme].foreground
-      // }}
+      style={{
+        backgroundColor: themeList[theme].background,
+        color: themeList[theme].foreground
+      }}
     >
       <div className='title'>To do</div>
       <div className='btn-wrap'>
-        <ThemeButton>Theme
-          {/* {{theme} === 'light' ? <MdOutlineDarkMode onClick={toggleTheme} /> : <MdDarkMode onClick={toggleTheme} />} */}
+        <ThemeButton>
+          {{theme} === 'light' ? <MdOutlineDarkMode onClick={toggleTheme} /> : <MdDarkMode onClick={toggleTheme} />}
         </ThemeButton>
       </div>
       <div className='checked'>완료 {finished} / {allTodos}</div>
-      <div className='checked'>완료</div>
       <div className='content'>{children}</div>
     </TemplateWrapper>
   );
