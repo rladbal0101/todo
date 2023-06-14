@@ -98,7 +98,7 @@ function App() {
     }
   };
 
-  // 날짜순으로 정렬
+  // 정렬
   const handleSort = () => {
     const sortTodos = [...todos];
     sortTodos.sort((a, b) => a.date < b.date ? -1 : 1);

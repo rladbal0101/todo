@@ -61,8 +61,13 @@ function Template(props) {
     >
       <div className='title'>To do</div>
       <div className='btn-wrap'>
-        <ThemeButton>
+        {/* <ThemeButton>
           {{theme} === 'light' ? <MdOutlineDarkMode onClick={toggleTheme} /> : <MdDarkMode onClick={toggleTheme} />}
+        </ThemeButton> */}
+        <ThemeButton
+          onClick={() => {toggleTheme(theme);}}
+        >
+          {{theme} === 'light' ? <MdOutlineDarkMode /> : <MdDarkMode />}
         </ThemeButton>
       </div>
       <div className='checked'>완료 {finished} / {allTodos}</div>

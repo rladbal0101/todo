@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BsSortNumericDown as SortIcon } from 'react-icons/bs';
+import { BsSortNumericDown, BsSortNumericUp } from 'react-icons/bs';
 
 import ListItem from './ListItem';
 
@@ -44,7 +44,7 @@ function List(props) {
         <SortingButton
           onClick={() => { onSort(); }}
         >
-          <SortIcon />
+          <BsSortNumericDown />
         </SortingButton>
       </div>
       {todos.map(todo => 

@@ -72,6 +72,7 @@ const Remove = styled.div`
 function ListItem(props) {
   const { todo, onRemove, onToggle, onRevision } = props;
   const { id, text, checked, date } = todo;
+
   
   // D-day 구하기
   const today = new Date();
