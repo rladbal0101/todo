@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { CgRemoveR } from "react-icons/cg";
-import { MdCheckBox, MdCheckBoxOutlineBlank, MdCreate } from "react-icons/md";
+import { MdCheckBox, MdCheckBoxOutlineBlank, MdCreate, MdDone } from "react-icons/md";
 
 const ListItemWrapper = styled.div`
   padding: 0.5rem;
@@ -44,11 +44,28 @@ const Text = styled.div`
   }
 `;
 
+const TextEditedInput = styled.input`
+  width: 500px;
+  height: 20px;
+  margin-left: 10px;
+  flex: 1;
+  font-size: 12px;
+  color: #555;
+  padding: 0 8px;
+  word-break: break-all;
+`;
+
+const CompletionInputDate = styled.input`
+  background: none;
+  outline: none;
+  border: none;
+  font-size: 12px;
+`;
 const CompletionDate = styled.div`
   font-size: 12px;
 `;
 
-const Revision = styled.div`
+const Edited = styled.div`
   font-size: 15px;
   padding-left: 10px;
   cursor: pointer;
@@ -70,16 +87,41 @@ const Remove = styled.div`
 `;
 
 function ListItem(props) {
-  const { todo, onRemove, onToggle, onRevision } = props;
+  const { todo, onRemove, onToggle, onModify } = props;
   const { id, text, checked, date } = todo;
+  const [edited, setEdited] = useState(false); // 수정 모드인지 확인하기 위한 플래그 값
+  const [newText, setNewText] = useState(text);
+  const [newDate, setNewDate] = useState(date);
 
-  
   // D-day 구하기
   const today = new Date();
   const someDay = new Date(date);
   const diffDate = someDay.getTime() - today.getTime();
   const dDayResult = Math.ceil(diffDate / (1000 * 60 * 60 * 24));
   const Day = dDayResult > 0 ? dDayResult * (-1) : `+${dDayResult * (-1)}`;
+
+  // 수정(텍스트, 날짜)
+  const handleTextEdited = (e) => {
+    setNewText(e.target.value);
+    // console.log(e.target.value);
+  };
+  const handleDateEdited = (e) => {
+    setNewDate(e.target.value);
+    // console.log(e.target.value);    
+  };
+  
+  const handleEdited = () => {
+    // const editTodo = {
+    //   id,
+    //   text: newText,
+    //   checked,
+    //   date: newDate
+    // };
+    // console.log(editTodo);
+    
+    console.log('수정완료');
+    onModify();
+  };
 
   return (
     <ListItemWrapper>
@@ -89,13 +131,25 @@ function ListItem(props) {
         {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
       </Checkbox>
       <DDay>D{Day}</DDay>
-      <Text checked={checked}>{text}</Text>
-      <CompletionDate>{todo.date}</CompletionDate>
-      <Revision
-        onClick={() => { onRevision(id); }}
+      {edited 
+        ? <TextEditedInput type="text" value={newText} onChange={handleTextEdited} />
+        : <Text checked={checked}>{text && newText}</Text>
+      }
+      {edited
+        ? <CompletionInputDate type='date' value={newDate} onChange={handleDateEdited} />
+        : <CompletionDate>{todo.date}</CompletionDate>
+      }
+      <Edited
+        onClick={() => {
+          setEdited(edited => !edited);
+          {edited && handleEdited();}
+        }}
       >
-        <MdCreate />
-      </Revision>
+        {edited
+          ? <MdDone />
+          : <MdCreate/>
+        }
+      </Edited>
       <Remove
         onClick={() => { onRemove(id); }}
       >

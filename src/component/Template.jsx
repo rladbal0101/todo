@@ -50,8 +50,6 @@ function Template(props) {
   const allTodos = todos.length;
   const finished = finishedTodos.length;
   
-  // console.log(theme);
-  
   return (
     <TemplateWrapper
       style={{
@@ -61,13 +59,12 @@ function Template(props) {
     >
       <div className='title'>To do</div>
       <div className='btn-wrap'>
-        {/* <ThemeButton>
-          {{theme} === 'light' ? <MdOutlineDarkMode onClick={toggleTheme} /> : <MdDarkMode onClick={toggleTheme} />}
-        </ThemeButton> */}
         <ThemeButton
-          onClick={() => {toggleTheme(theme);}}
+          onClick={() => {
+            toggleTheme(theme);
+          }}
         >
-          {{theme} === 'light' ? <MdOutlineDarkMode /> : <MdDarkMode />}
+          {theme === 'light' ? <MdDarkMode /> : <MdOutlineDarkMode />}
         </ThemeButton>
       </div>
       <div className='checked'>완료 {finished} / {allTodos}</div>

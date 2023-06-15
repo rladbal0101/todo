@@ -30,7 +30,6 @@ const themeList = {
 function App() {
   const [todos, setTodos] = useState([]);
   const [theme, setTheme] = useState('light');
-  const [revTodos, setRevTodos] = useState([]);
 
   // 로컬 스토리지에서 가져오기
   useEffect(() => {
@@ -70,12 +69,17 @@ function App() {
   }, []);
 
   // 수정
-  const handleRevision = useCallback((id) => {
-    // setTodos(todos => todos.filter(todo => todo.id !== id)); // 이건 삭제기능
-    
-    setRevTodos(todos => todos.filter(todo => todo.id === id));
-    console.log(revTodos);
-    
+  // const handleModify = useCallback((id, editTodo, newText, newDate) => {
+  //   setTodos(todos => todos.map((todo) => 
+  //     // todo.id === id ? { ...todo, ...editTodo } : todo
+  //     todo.id === id ? { ...todo, text: newText, date: newDate } : todo
+  //   ));
+  // }, []);
+  const handleModify = useCallback((id, newText, newDate) => {
+    setTodos(todos => todos.map((todo) => 
+      // todo.id === id ? { ...todo, ...editTodo } : todo
+      todo.id === id ? { ...todo, text: newText, date: newDate } : todo
+    ));
   }, []);
 
   // 총 해야할 일
@@ -103,6 +107,14 @@ function App() {
     const sortTodos = [...todos];
     sortTodos.sort((a, b) => a.date < b.date ? -1 : 1);
     setTodos(sortTodos);
+
+    // sortTodos.sort((a, b) => {
+    //   if (a > b) {
+    //     a.date < b.date ? -1 : 1
+    //   } else {
+    //     a.date > b.date ? -1 : 1
+    //   }
+    // });
   };
 
   return (
@@ -115,7 +127,7 @@ function App() {
       />
       <Template theme={{ theme, themeList, toggleTheme }} todos={todos} finishedTodos={finishedTodos} >
         <Insert onInsert={handleInsert} />
-        <List todos={todos} onRemove={handleRemove} onToggle={handleToggle} onRevision={handleRevision} onSort={handleSort} />
+        <List todos={todos} onRemove={handleRemove} onToggle={handleToggle} onSort={handleSort} onModify={handleModify} />
       </Template>
     </>
   );
