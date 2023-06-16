@@ -10,29 +10,11 @@ const ListWrapper = styled.div`
   height: calc(100vh - 195px);
   overflow-y: auto;
 
-  & .sort-btn-wrap {
+  /* & .sort-btn-wrap {
     width: 100%;
     display: flex;
     justify-content: flex-end;
-  }
-`;
-
-const SortingButton = styled.button`
-  width: 40px;
-  height: 24px;
-  background: none;
-  outline: none;
-  border: none;
-  padding: 12px 8px 8px;
-  font-size: 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-
-  &:hover {
-    color: #55D66B;
-  }
+  } */
 `;
 
 const DoingList = styled.div`
@@ -43,7 +25,23 @@ const DoingList = styled.div`
   & p {
     font-size: 16px;
     font-weight: bold;
-    padding: 0 0 10px 10px;
+    padding: 10px 0 10px 10px;
+  }
+  & .doing-list-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+
+    svg {
+      margin-right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+
+      &:hover {
+        color: #55D66B;
+      }
+    }
   }
 `;
 
@@ -76,24 +74,51 @@ const DoneList = styled.div`
 `;
 
 function List(props) {
-  const { todos, onRemove, onDoneRemove, onToggle, onSort, onModify } = props;
+  const { todos, onRemove, onDoneRemove, onToggle, onModify, theme: { theme, themeList, toggleTheme } } = props;
+  
   const [sort, setSort] = useState('false');
+  const [sortFlag, setSortFlag] = useState(true);
 
-  console.log(todos);
+  
+  const doingTodos = todos.filter(todo => todo.checked === false);
+  const doneTodos = todos.filter(todo => todo.checked === true);
+  console.log(doingTodos);
+  
+  // const array = [{date: '3', name: 'cc'}, {date: '1', name: 'aa'}, {date: '2', name: 'bb'}];
+  // array.sort((a, b) => a.date < b.date ? -1 : 1);
+  // console.log(array);
 
-  const handleRemoveCheck = () => {
-    const removeCheck = window.confirm('완료된 항목을 모두 삭제하시겠습니까?');
-    if(removeCheck) {
-      onDoneRemove();
-      alert('삭제되었습니다.');
+  // 정렬
+  const handleSort = () => {
+    if (sortFlag) {
+      console.log('1');
+      doingTodos.sort((a, b) => a.date < b.date ? -1 : 1);
+      setSortFlag(false);
     } else {
-      alert('삭제가 취소되었습니다.');
+      console.log('2');
+      doingTodos.sort((a, b) => a.date > b.date ? -1 : 1);
+      setSortFlag(true);
     }
   };
+
+  const handleRemoveCheck = () => {
+    if (doneTodos.length < 1) {
+      alert('삭제할 항목이 없습니다.');
+    } else {
+      const removeCheck = window.confirm('완료된 항목을 모두 삭제하시겠습니까?');
+      if(removeCheck) {
+        onDoneRemove();
+        alert('삭제되었습니다.');
+      } else {
+        alert('취소되었습니다.');
+      }
+    }
+  };
+
   return (
     <ListWrapper>
-      <div className='sort-btn-wrap'>
-        <SortingButton
+      {/* <div className='sort-btn-wrap'>
+        <button
           onClick={() => { 
             onSort();
             setSort(sort => !sort);
@@ -103,12 +128,25 @@ function List(props) {
             ? <BsSortNumericDown />
             : <BsSortNumericUp />
           }
-        </SortingButton>
-      </div>
+        </button>
+      </div> */}
       <DoingList>
-        <p>진행중</p>
-        {todos.filter(todo => todo.checked === false).map(todo => 
-          <ListItem key={todo.id} todo={todo} onRemove={onRemove} onToggle={onToggle} onModify={onModify} />
+        <div className='doing-list-wrap'>
+          <p>진행중</p>
+          <div
+            onClick={() => { 
+              handleSort();
+              setSort(sort => !sort);
+            }}
+          >
+            {sort
+              ? <BsSortNumericDown />
+              : <BsSortNumericUp />
+            }
+          </div>
+        </div>
+        {doingTodos.map(todo => 
+          <ListItem key={todo.id} todo={todo} onRemove={onRemove} onToggle={onToggle} onModify={onModify} theme={{ theme, themeList, toggleTheme }} />
         )}
       </DoingList>
       <DoneList>
@@ -118,8 +156,8 @@ function List(props) {
             onClick={handleRemoveCheck}
           />
         </div>
-        {todos.filter(todo => todo.checked === true).map(todo => 
-          <ListItem key={todo.id} todo={todo} onRemove={onRemove} onToggle={onToggle} onModify={onModify} />
+        {doneTodos.map(todo => 
+          <ListItem key={todo.id} todo={todo} onRemove={onRemove} onToggle={onToggle} onModify={onModify} theme={{ theme, themeList, toggleTheme }} />
         )}
       </DoneList>
     </ListWrapper>

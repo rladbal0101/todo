@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { GrAdd as AddIcon } from 'react-icons/gr';
 
 const InsertWrapper = styled.form`
   display: flex;
+  border-bottom: 1px solid #ccc;
   background: #E8E3E3;
 `;
 
@@ -14,6 +17,10 @@ const StyledInput = styled.input`
   font-size: 12px;
   padding: 12px;
   flex: 1;
+
+  ::placeholder {
+    color: #B3BCBF;
+  }
   `;
 
 const InputDateWrap = styled.div`
@@ -25,34 +32,51 @@ const InputDateWrap = styled.div`
   }
 `;
 
-const InputDate = styled.input`
-  background: none;
+// const InputDate = styled.input`
+//   background: none;
+//   outline: none;
+//   border: none;
+//   font-size: 12px;
+//   display: flex;
+//   align-items: center;
+//   margin: 0 15px;
+//   color: #B3BCBF;
+//   cursor: pointer;
+
+// `;
+
+const InputDate = styled(DatePicker)`
+  /* background: #216ba5; */
   outline: none;
   border: none;
   font-size: 12px;
   display: flex;
   align-items: center;
   margin: 0 15px;
+  color: #B3BCBF;
+  cursor: pointer;
+
 `;
 
-const StyledButton = styled.button`
-  border: none;
+
+const StyledAddButton = styled.button`
   font-size: 16px;
-  background: #E8E3E3;
   padding: 12px;
+  border: none;
+  background: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: .3s;
   
-  &:hover {
-    background-color: #EFCBCB;
+  & svg:hover {
+    color: red; // 다시 확인해야함
   }
 `;
 
 function Insert(props) {
-  const { onInsert } = props;
+  const { onInsert, theme: { theme, themeList, toggleTheme } } = props;
   
   const [value, setValue] = useState('');  
   const [dateValue, setDateValue] = useState('');
@@ -79,7 +103,12 @@ function Insert(props) {
   };
 
   return (
-    <InsertWrapper onSubmit={handleSubmit}>
+    <InsertWrapper onSubmit={handleSubmit}
+      style={{
+        backgroundColor: themeList[theme].background,
+        color: themeList[theme].foreground
+      }}
+    >
       <StyledInput
         type='text'
         placeholder='할 일을 입력하세요'
@@ -87,7 +116,13 @@ function Insert(props) {
         onChange={handleChange}
       />
       <InputDateWrap>
-        <label className='input-date-text' htmlFor='date'>완료기한 : </label>
+        {/* <label className='input-date-text' htmlFor='date'>완료기한 : </label> */}
+        {/* <InputDate
+          type='date'
+          id='inputDate'
+          value={dateValue}
+          onChange={handleDateChange}
+        /> */}
         <InputDate
           type='date'
           id='inputDate'
@@ -95,12 +130,16 @@ function Insert(props) {
           onChange={handleDateChange}
         />
       </InputDateWrap>
-    
-      <StyledButton type='submit'>
+      <StyledAddButton type='submit'>
         <AddIcon />
-      </StyledButton>
+      </StyledAddButton>
     </InsertWrapper>
   );
 }
 
 export default Insert;
+
+// 달력 커스텀
+// https://www.youtube.com/watch?v=oyBzRPd9Ur8
+// 달력 라이브러리
+// https://devilfront.tistory.com/122

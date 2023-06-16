@@ -18,11 +18,11 @@ const GlobalStyle = createGlobalStyle`
 // 다크/라이트 모드
 const themeList = {
   light: {
-    foreground: '#333',
+    foreground: '#555',
     background: '#eee'
   },
   dark: {
-    foreground: '#EDB4B1',
+    foreground: '#d1d1d1',
     background: '#222',
   }
 };
@@ -74,12 +74,6 @@ function App() {
   }, []);
 
   // 수정
-  // const handleModify = useCallback((id, editTodo) => {
-  //   setTodos(todos => todos.map((todo) => 
-  //     todo.id === id ? { ...todo, ...editTodo } : todo
-  //     // todo.id === id ? { ...todo, text: newText, date: newDate } : todo
-  //   ));
-  // }, []);
   const handleModify = useCallback((id, newText, newDate) => {
     setTodos(todos => todos.map((todo) => 
       // todo.id === id ? { ...todo, ...editTodo } : todo
@@ -108,28 +102,28 @@ function App() {
   };
 
   // 정렬
-  const handleSort = () => {
-    const sortTodos = [...todos];
-    sortTodos.sort((a, b) => a.date < b.date ? -1 : 1);
-    setTodos(sortTodos);
+  // const handleSort = () => {
+  //   const sortTodos = [...todos];
+  //   sortTodos.sort((a, b) => a.date < b.date ? -1 : 1);
+  //   setTodos(sortTodos);
 
-    // 진행중인 Todo만 정렬
-    // const doingTodos = todos.filter(todo => {
-    //   return todo.checked === false;
-    // });
+  //   // 진행중인 Todo만 정렬
+  //   // const doingTodos = todos.filter(todo => {
+  //   //   return todo.checked === false;
+  //   // });
 
-    // const sortTodos = [...doingTodos];
-    // sortTodos.sort((a, b) => a.date < b.date ? -1 : 1);
-    // setTodos(sortTodos);
+  //   // const sortTodos = [...doingTodos];
+  //   // sortTodos.sort((a, b) => a.date < b.date ? -1 : 1);
+  //   // setTodos(sortTodos);
 
-    // sortTodos.sort((a, b) => {
-    //   if (a > b) {
-    //     a.date < b.date ? -1 : 1
-    //   } else {
-    //     a.date > b.date ? -1 : 1
-    //   }
-    // });
-  };
+  //   // sortTodos.sort((a, b) => {
+  //   //   if (a > b) {
+  //   //     a.date < b.date ? -1 : 1
+  //   //   } else {
+  //   //     a.date > b.date ? -1 : 1
+  //   //   }
+  //   // });
+  // };
 
   return (
     <>
@@ -140,8 +134,8 @@ function App() {
         }}
       />
       <Template theme={{ theme, themeList, toggleTheme }} todos={todos} finishedTodos={finishedTodos} >
-        <Insert onInsert={handleInsert} />
-        <List todos={todos} onRemove={handleRemove} onDoneRemove={handleDoneRemove} onToggle={handleToggle} onSort={handleSort} onModify={handleModify} />
+        <Insert theme={{ theme, themeList, toggleTheme }} onInsert={handleInsert} />
+        <List theme={{ theme, themeList, toggleTheme }} todos={todos} onRemove={handleRemove} onDoneRemove={handleDoneRemove} onToggle={handleToggle} onModify={handleModify} />
       </Template>
     </>
   );
@@ -161,3 +155,8 @@ export default App;
 
 // 중요한 일은 핀 고정 버튼 누르면 상위로 올리기
 // 드래그 앤 드랍 적용
+
+
+// form태그 => submit이벤트, form태그 안쓰고 사용하기
+// state를 여러개 사용했는데 객체 하나로 관리해볼것
+// state는 쓰는 쪽에다가 선언할 것! 무조건 App에 다 선언하는게 아님

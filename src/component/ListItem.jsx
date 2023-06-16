@@ -7,6 +7,11 @@ const ListItemWrapper = styled.div`
   padding: 0.5rem;
   display: flex;
   align-items: center;
+  /* background: #ddd;
+  border-radius: 10px; */
+  & + & {
+    margin-top: 4px;
+  }
 `;
 
 const Checkbox = styled.div`
@@ -32,7 +37,6 @@ const Text = styled.div`
   margin-left: 10px;
   flex: 1;
   font-size: 12px;
-  color: #555;
   padding: 0 8px;
   word-break: break-all; // 글자 줄바꿈 (?, !, $, () 해결 안됨)
 
@@ -78,7 +82,6 @@ const Remove = styled.div`
   display: flex;
   align-items: center;
   font-size: 14px;
-  color: #333;
   padding-left: 14px;
   cursor: pointer;
   &:hover {
@@ -87,7 +90,7 @@ const Remove = styled.div`
 `;
 
 function ListItem(props) {
-  const { todo, onRemove, onToggle, onModify } = props;
+  const { todo, onRemove, onToggle, onModify, theme: { theme, themeList, toggleTheme } } = props;
   const { id, text, checked, date } = todo;
   const [edited, setEdited] = useState(false); // 수정 모드인지 확인하기 위한 플래그 값
   const [newText, setNewText] = useState(text);
@@ -110,23 +113,17 @@ function ListItem(props) {
     console.log(e.target.value);    
   };
   
-  const handleEdited = () => {
-    // const editTodo = {
-    //   id,
-    //   text: newText,
-    //   checked,
-    //   date: newDate
-    // };
-    // console.log(editTodo);
-    
-    onModify(newText, newDate);
-    console.log(edited);
-    console.log(todo);
-    console.log('수정완료');
+  const handleEdited = () => {    
+    onModify(id, newText, newDate);
   };
 
   return (
-    <ListItemWrapper>
+    <ListItemWrapper
+      style={{
+        backgroundColor: themeList[theme].background,
+        color: themeList[theme].foreground
+      }}
+    >
       <Checkbox checked={checked}
         onClick={() => { onToggle(id); }}
       >

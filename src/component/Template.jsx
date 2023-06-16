@@ -6,12 +6,15 @@ const TemplateWrapper = styled.div`
   width: calc(100%);
   min-height: 100vh;
   font-size: 22px;
-  /* margin: 0 auto; */
+`;
+
+const TemplateTopWrapper = styled.div`
+  border-bottom: 1px solid #ccc;
 
   .title {
+    font-weight: bold;
     text-align: center;
     padding: 30px 0;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,20 +31,22 @@ const TemplateWrapper = styled.div`
     font-size: 14px;
     margin: 0 12px 12px 0;
   }
-  
-  .content {
-    /* background: #d7d7d7; */
-  }
 `;
 
 const ThemeButton = styled.button`
-  width: 28px;
-  height: 28px;
   display: flex;
   justify-content: center;
+  color: #8C8C8C;
+  border: none;
+  background: none;
+  font-size: 18px;
   align-items: center;
   margin-left: 6px;
   cursor: pointer;
+  
+  :hover {
+    color: #7CE9F9;
+  }
 `;
 
 function Template(props) {
@@ -57,18 +62,20 @@ function Template(props) {
         color: themeList[theme].foreground
       }}
     >
-      <div className='title'>To do</div>
-      <div className='btn-wrap'>
-        <ThemeButton
-          onClick={() => {
-            toggleTheme(theme);
-          }}
-        >
-          {theme === 'light' ? <MdDarkMode /> : <MdOutlineDarkMode />}
-        </ThemeButton>
-      </div>
-      <div className='checked'>완료 {finished} / {allTodos}</div>
-      <div className='content'>{children}</div>
+      <TemplateTopWrapper>
+        <div className='title'>To do</div>
+        <div className='btn-wrap'>
+          <ThemeButton
+            onClick={() => {
+              toggleTheme(theme);
+            }}
+          >
+            {theme === 'light' ? <MdDarkMode /> : <MdOutlineDarkMode />}
+          </ThemeButton>
+        </div>
+        <div className='checked'>완료 {finished} / {allTodos}</div>
+      </TemplateTopWrapper>
+      <div>{children}</div>
     </TemplateWrapper>
   );
 }
