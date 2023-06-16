@@ -103,11 +103,11 @@ function ListItem(props) {
   // 수정(텍스트, 날짜)
   const handleTextEdited = (e) => {
     setNewText(e.target.value);
-    // console.log(e.target.value);
+    console.log(e.target.value);
   };
   const handleDateEdited = (e) => {
     setNewDate(e.target.value);
-    // console.log(e.target.value);    
+    console.log(e.target.value);    
   };
   
   const handleEdited = () => {
@@ -119,8 +119,10 @@ function ListItem(props) {
     // };
     // console.log(editTodo);
     
+    onModify(newText, newDate);
+    console.log(edited);
+    console.log(todo);
     console.log('수정완료');
-    onModify();
   };
 
   return (
@@ -133,7 +135,7 @@ function ListItem(props) {
       <DDay>D{Day}</DDay>
       {edited 
         ? <TextEditedInput type="text" value={newText} onChange={handleTextEdited} />
-        : <Text checked={checked}>{text && newText}</Text>
+        : <Text checked={checked}>{text}</Text>
       }
       {edited
         ? <CompletionInputDate type='date' value={newDate} onChange={handleDateEdited} />

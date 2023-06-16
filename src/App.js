@@ -61,6 +61,11 @@ function App() {
     setTodos(todos => todos.filter(todo => todo.id !== id));
   }, []);
 
+  // 완료항목 삭제
+  const handleDoneRemove = useCallback(() => {
+    setTodos(todos => todos.filter(todo => todo.checked === false));
+  }, []);
+
   // 체크박스 누를 때
   const handleToggle = useCallback((id) => {
     setTodos(todos => todos.map((todo) => 
@@ -69,10 +74,10 @@ function App() {
   }, []);
 
   // 수정
-  // const handleModify = useCallback((id, editTodo, newText, newDate) => {
+  // const handleModify = useCallback((id, editTodo) => {
   //   setTodos(todos => todos.map((todo) => 
-  //     // todo.id === id ? { ...todo, ...editTodo } : todo
-  //     todo.id === id ? { ...todo, text: newText, date: newDate } : todo
+  //     todo.id === id ? { ...todo, ...editTodo } : todo
+  //     // todo.id === id ? { ...todo, text: newText, date: newDate } : todo
   //   ));
   // }, []);
   const handleModify = useCallback((id, newText, newDate) => {
@@ -108,6 +113,15 @@ function App() {
     sortTodos.sort((a, b) => a.date < b.date ? -1 : 1);
     setTodos(sortTodos);
 
+    // 진행중인 Todo만 정렬
+    // const doingTodos = todos.filter(todo => {
+    //   return todo.checked === false;
+    // });
+
+    // const sortTodos = [...doingTodos];
+    // sortTodos.sort((a, b) => a.date < b.date ? -1 : 1);
+    // setTodos(sortTodos);
+
     // sortTodos.sort((a, b) => {
     //   if (a > b) {
     //     a.date < b.date ? -1 : 1
@@ -127,7 +141,7 @@ function App() {
       />
       <Template theme={{ theme, themeList, toggleTheme }} todos={todos} finishedTodos={finishedTodos} >
         <Insert onInsert={handleInsert} />
-        <List todos={todos} onRemove={handleRemove} onToggle={handleToggle} onSort={handleSort} onModify={handleModify} />
+        <List todos={todos} onRemove={handleRemove} onDoneRemove={handleDoneRemove} onToggle={handleToggle} onSort={handleSort} onModify={handleModify} />
       </Template>
     </>
   );
@@ -141,11 +155,9 @@ export default App;
 // 미입력시 버튼 비활성화 또는 유효성 검사 후 경고 띄우기
 // 날짜도 같이 기록(디데이 표시)
 // 할일 목록 정렬기능 (정렬 참고(https://jurgen-94.tistory.com/21))
-
-
+// 완료된 일은 밑으로 내리기
+// 할일 수정 기능
 // 테마 적용(다크, 라이트 모드)
 
-// 완료된 일은 밑으로 내리기
 // 중요한 일은 핀 고정 버튼 누르면 상위로 올리기
 // 드래그 앤 드랍 적용
-// 할일 수정 기능
