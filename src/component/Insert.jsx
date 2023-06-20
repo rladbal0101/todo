@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+// import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
 import { GrAdd as AddIcon } from 'react-icons/gr';
 
 const InsertWrapper = styled.form`
@@ -32,21 +32,8 @@ const InputDateWrap = styled.div`
   }
 `;
 
-// const InputDate = styled.input`
-//   background: none;
-//   outline: none;
-//   border: none;
-//   font-size: 12px;
-//   display: flex;
-//   align-items: center;
-//   margin: 0 15px;
-//   color: #B3BCBF;
-//   cursor: pointer;
-
-// `;
-
-const InputDate = styled(DatePicker)`
-  /* background: #216ba5; */
+const InputDate = styled.input`
+  background: none;
   outline: none;
   border: none;
   font-size: 12px;
@@ -57,6 +44,19 @@ const InputDate = styled(DatePicker)`
   cursor: pointer;
 
 `;
+
+// const InputDate = styled(DatePicker)`
+//   /* background: #216ba5; */
+//   outline: none;
+//   border: none;
+//   font-size: 12px;
+//   display: flex;
+//   align-items: center;
+//   margin: 0 15px;
+//   color: #B3BCBF;
+//   cursor: pointer;
+
+// `;
 
 
 const StyledAddButton = styled.button`

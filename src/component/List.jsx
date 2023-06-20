@@ -74,32 +74,28 @@ const DoneList = styled.div`
 `;
 
 function List(props) {
-  const { todos, onRemove, onDoneRemove, onToggle, onModify, theme: { theme, themeList, toggleTheme } } = props;
+  const { todos, onRemove, onDoneRemove, onToggle, onSort, onModify, theme: { theme, themeList, toggleTheme } } = props;
   
   const [sort, setSort] = useState('false');
-  const [sortFlag, setSortFlag] = useState(true);
+  // const [sortFlag, setSortFlag] = useState(true);
 
   
   const doingTodos = todos.filter(todo => todo.checked === false);
   const doneTodos = todos.filter(todo => todo.checked === true);
   console.log(doingTodos);
   
-  // const array = [{date: '3', name: 'cc'}, {date: '1', name: 'aa'}, {date: '2', name: 'bb'}];
-  // array.sort((a, b) => a.date < b.date ? -1 : 1);
-  // console.log(array);
-
   // 정렬
-  const handleSort = () => {
-    if (sortFlag) {
-      console.log('1');
-      doingTodos.sort((a, b) => a.date < b.date ? -1 : 1);
-      setSortFlag(false);
-    } else {
-      console.log('2');
-      doingTodos.sort((a, b) => a.date > b.date ? -1 : 1);
-      setSortFlag(true);
-    }
-  };
+  // const handleSort = () => {
+  //   if (sortFlag) {
+  //     console.log('1');
+  //     doingTodos.sort((a, b) => a.date < b.date ? -1 : 1);
+  //     setSortFlag(false);
+  //   } else {
+  //     console.log('2');
+  //     doingTodos.sort((a, b) => a.date > b.date ? -1 : 1);
+  //     setSortFlag(true);
+  //   }
+  // };
 
   const handleRemoveCheck = () => {
     if (doneTodos.length < 1) {
@@ -117,32 +113,20 @@ function List(props) {
 
   return (
     <ListWrapper>
-      {/* <div className='sort-btn-wrap'>
-        <button
-          onClick={() => { 
-            onSort();
-            setSort(sort => !sort);
-          }}
-        >
-          {sort
-            ? <BsSortNumericDown />
-            : <BsSortNumericUp />
-          }
-        </button>
-      </div> */}
       <DoingList>
         <div className='doing-list-wrap'>
           <p>진행중</p>
           <div
             onClick={() => { 
-              handleSort();
+              onSort();
               setSort(sort => !sort);
             }}
           >
-            {sort
+            {/* {sort
               ? <BsSortNumericDown />
               : <BsSortNumericUp />
-            }
+            } */}
+            <BsSortNumericDown />
           </div>
         </div>
         {doingTodos.map(todo => 

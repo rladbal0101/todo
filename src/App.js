@@ -102,28 +102,28 @@ function App() {
   };
 
   // 정렬
-  // const handleSort = () => {
-  //   const sortTodos = [...todos];
-  //   sortTodos.sort((a, b) => a.date < b.date ? -1 : 1);
-  //   setTodos(sortTodos);
+  const handleSort = () => {
+    const sortTodos = [...todos];
+    sortTodos.sort((a, b) => a.date < b.date ? -1 : 1);
+    setTodos(sortTodos);
 
-  //   // 진행중인 Todo만 정렬
-  //   // const doingTodos = todos.filter(todo => {
-  //   //   return todo.checked === false;
-  //   // });
+    // 진행중인 Todo만 정렬
+    // const doingTodos = todos.filter(todo => {
+    //   return todo.checked === false;
+    // });
 
-  //   // const sortTodos = [...doingTodos];
-  //   // sortTodos.sort((a, b) => a.date < b.date ? -1 : 1);
-  //   // setTodos(sortTodos);
+    // const sortTodos = [...doingTodos];
+    // sortTodos.sort((a, b) => a.date < b.date ? -1 : 1);
+    // setTodos(sortTodos);
 
-  //   // sortTodos.sort((a, b) => {
-  //   //   if (a > b) {
-  //   //     a.date < b.date ? -1 : 1
-  //   //   } else {
-  //   //     a.date > b.date ? -1 : 1
-  //   //   }
-  //   // });
-  // };
+    // sortTodos.sort((a, b) => {
+    //   if (a > b) {
+    //     a.date < b.date ? -1 : 1
+    //   } else {
+    //     a.date > b.date ? -1 : 1
+    //   }
+    // });
+  };
 
   return (
     <>
@@ -135,7 +135,7 @@ function App() {
       />
       <Template theme={{ theme, themeList, toggleTheme }} todos={todos} finishedTodos={finishedTodos} >
         <Insert theme={{ theme, themeList, toggleTheme }} onInsert={handleInsert} />
-        <List theme={{ theme, themeList, toggleTheme }} todos={todos} onRemove={handleRemove} onDoneRemove={handleDoneRemove} onToggle={handleToggle} onModify={handleModify} />
+        <List theme={{ theme, themeList, toggleTheme }} todos={todos} onRemove={handleRemove} onDoneRemove={handleDoneRemove} onToggle={handleToggle} onSort={handleSort} onModify={handleModify} />
       </Template>
     </>
   );
